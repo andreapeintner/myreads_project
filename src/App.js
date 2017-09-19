@@ -1,30 +1,29 @@
 import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
-import BookShelf from './BookShelf'
-import Search from './Search'
 import { Route } from 'react-router-dom'
-// import PropTypes from 'prop-types'
-// import Book from './Book'
+import BookShelf from './BookShelf'
 import './App.css'
 
 class BooksApp extends Component {
   state = {
-    books: []
+    books: [],
+    searchedBooks: []
   }
-  
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({books})
     })
   }
-  searchBook(book) {
-    BooksAPI.create(book).then(book => {
+  getBooksForShelf(shelfName){
+    return this.state.books.filter((b) => b.shelf === shelfName)
+  }
+  changeShelf = (book, newShelf) => {
+    BooksAPI.update(book, newShelf).then(() => {
       this.setState(state => ({
-        books: state.books.concat([ book ])
+        books: state.books.filter(b => b.id !== book.id).concat([ book ])
       }))
     })
   }
-
   render() {
     return (
       <div className="app">
@@ -36,13 +35,26 @@ class BooksApp extends Component {
             <div className="list-books-content">
               <div>
                 <BookShelf
-                  books={this.state.books.title}/>
+                  title="Currently reading"
+                  books={this.getBooksForShelf("currentlyReading")}
+                  changeShelf={this.changeShelf}
+                />
+                <BookShelf
+                  title="Want to read"
+                  books={this.getBooksForShelf("wantToRead")}
+                  changeShelf={this.changeShelf}
+                />
+                <BookShelf
+                  title="Read"
+                  books={this.getBooksForShelf("read")}
+                  changeShelf={this.changeShelf}
+                />
               </div>
             </div>
           </div>
           )}
         />
-        <Route path="/search" render={( {history} ) => (
+        {/* <Route path="/search" render={( {history} ) => (
           <Search
             onSearchBook={(book) => {
                 this.searchBook(book)
@@ -51,7 +63,7 @@ class BooksApp extends Component {
             books={this.state.books}
             />
           )}
-        />
+        />*/}
       </div>
     )
   }

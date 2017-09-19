@@ -1,27 +1,36 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { PropTypes } from 'prop-types'
 import Book from './Book'
 
 class BookShelf extends Component {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    books: PropTypes.array.isRequired,
+    changeShelf: PropTypes.func.isRequired
+  }
   render() {
-    // const shelfs = [
-    //   {"name": "Currently Reading", "id": "currentlyReading"},
-    //   {"name": "Want to Read", "id": "wantToRead"},
-    //   {"name": "Read", "id": "read "}
-    // ]
     return (
-      <div>
         <div className="bookshelf">
-          <h2 className="bookshelf-title">Currently Reading</h2>
-
-          <Book />
-
+          <h2 className="bookshelf-title">{this.props.title}</h2>
+          <div className="bookshelf-books">
+            <ol className="books-grid">
+              {this.props.books.map((book) => (
+                <li key={book.id}>
+                  <Book
+                    book={book}
+                    changeShelf={this.props.changeShelf}
+                  />
+                </li>
+              ))}
+            </ol>
+          </div>
+            <Link to="/search" className="open-search">open-search</Link>
         </div>
-        <Link to="/search" className="open-search">open-search</Link>
-        {/* <div className="open-search">
+
+        /* <div className="open-search">
           <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
-        </div> */}
-      </div>
+        </div> */
     )
   }
 }
