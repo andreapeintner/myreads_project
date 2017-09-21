@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import * as BooksAPI from './BooksAPI'
 import { Route } from 'react-router-dom'
 import BookShelf from './BookShelf'
+import Search from './Search'
 import './App.css'
 
 class BooksApp extends Component {
@@ -14,16 +15,18 @@ class BooksApp extends Component {
       this.setState({books})
     })
   }
-  getBooksForShelf(shelfName){
-    return this.state.books.filter((b) => b.shelf === shelfName)
-  }
   changeShelf = (book, newShelf) => {
     BooksAPI.update(book, newShelf).then(() => {
+      book.shelf = newShelf;
       this.setState(state => ({
         books: state.books.filter(b => b.id !== book.id).concat([ book ])
       }))
     })
   }
+  getBooksForShelf(shelfName){
+    return this.state.books.filter((b) => b.shelf === shelfName)
+  }
+
   render() {
     return (
       <div className="app">
@@ -54,16 +57,13 @@ class BooksApp extends Component {
           </div>
           )}
         />
-        {/* <Route path="/search" render={( {history} ) => (
+        <Route path="/search" render={( {history} ) => (
           <Search
-            onSearchBook={(book) => {
-                this.searchBook(book)
-                history.push('/')
-              }}
-            books={this.state.books}
+            onMoveBook={this.moveBook}
+            booksOnShelf={this.state.books}
             />
           )}
-        />*/}
+        />
       </div>
     )
   }
