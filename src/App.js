@@ -7,25 +7,25 @@ import './App.css'
 
 class BooksApp extends Component {
   state = {
-    books: [],
-    searchedBooks: []
+    books: []
   }
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({books})
     })
   }
+  getBooksForShelf(shelfName){
+    return this.state.books.filter((b) => b.shelf === shelfName)
+  }
   changeShelf = (book, newShelf) => {
     BooksAPI.update(book, newShelf).then(() => {
-      book.shelf = newShelf;
+      book.shelf = newShelf
       this.setState(state => ({
         books: state.books.filter(b => b.id !== book.id).concat([ book ])
       }))
     })
   }
-  getBooksForShelf(shelfName){
-    return this.state.books.filter((b) => b.shelf === shelfName)
-  }
+
 
   render() {
     return (
@@ -59,7 +59,7 @@ class BooksApp extends Component {
         />
         <Route path="/search" render={( {history} ) => (
           <Search
-            onMoveBook={this.moveBook}
+            changeShelf={this.changeShelf}
             booksOnShelf={this.state.books}
             />
           )}

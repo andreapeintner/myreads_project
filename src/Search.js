@@ -9,7 +9,7 @@ import Book from './Book'
 class Search extends Component {
   static propTypes = {
       booksOnShelf: PropTypes.array.isRequired,
-      onChangeShelf: PropTypes.func.isRequired
+      changeShelf: PropTypes.func.isRequired
     }
 
     state = {
@@ -26,12 +26,11 @@ class Search extends Component {
           if (books.error) {
             books = []
           }
-          books.map(book => (this.props.booksOnShelf.filter((b) => b.id === book.id).map(b => book.shelf = b.shelf)))
+          books.map(book => (this.props.booksOnShelf.filter((b) => b.id === book.id).map(b => book.newShelf === b.newShelf)))
           this.setState({books})
         })
       }
     }
-
     render () {
       return (
         <div className="search-books">
@@ -52,7 +51,7 @@ class Search extends Component {
                   {this.state.books.sort(sortBy('title'))
                     .map(book => (
                       <Book
-                        onMoveBook={this.props.onMoveBook}
+                        changeShelf={this.props.changeShelf}
                         key={book.id}
                         book={book}
                       />

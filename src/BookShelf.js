@@ -10,16 +10,18 @@ class BookShelf extends Component {
     changeShelf: PropTypes.func.isRequired
   }
   render() {
+    const {title, books} = this.props
     return (
         <div className="bookshelf">
-          <h2 className="bookshelf-title">{this.props.title}</h2>
+          <h2 className="bookshelf-title">{title}</h2>
           <div className="bookshelf-books">
             <ol className="books-grid">
-              {this.props.books.map((book) => (
+              {books.map((book) => (
                 <li key={book.id}>
                   <Book
-                    book={book}
                     changeShelf={this.props.changeShelf}
+                    // key={book.id}
+                    book={book}
                   />
                 </li>
               ))}
@@ -27,10 +29,6 @@ class BookShelf extends Component {
           </div>
             <Link to="/search" className="open-search">open-search</Link>
         </div>
-
-        /* <div className="open-search">
-          <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
-        </div> */
     )
   }
 }
