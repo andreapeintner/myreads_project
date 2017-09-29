@@ -17,7 +17,7 @@ class Book extends Component {
     return (
       <div className="book">
        <div className="book-top">
-         <div className="book-cover" style={{ height: 192, width: 128, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+         <div className="book-cover" style={{ height: 192, width: 128, backgroundImage: `url(${book.imageLinks ? book.imageLinks.thumbnail : `https://books.google.com/googlebooks/images/no_cover_thumb.gif`})` }}></div>
           <div className="book-shelf-changer">
             <select
               value={book.shelf}

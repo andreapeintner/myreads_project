@@ -13,6 +13,7 @@ class Search extends Component {
       query: '',
       books: []
     }
+
     updateQuery = (query) => {
       if (!query) {
         this.setState({query: '', books: []})
@@ -23,15 +24,11 @@ class Search extends Component {
               books.forEach((book, index) => {
                   let displayedBooks = this.state.books.find((b) => b.id === book.id)
                   book.shelf = displayedBooks ? displayedBooks.shelf : 'none'
-                  // books[index] = book;
-              });
+              })
           }
           if (books.error) {
             books = []
           }
-          // books.map(book =>
-          //   (this.props.booksOnShelf.filter((b) => b.id === book.id).map(b => book.newShelf === b.newShelf))
-          // )
           this.setState({books})
         })
       }
