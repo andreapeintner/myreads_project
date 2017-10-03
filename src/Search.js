@@ -5,13 +5,12 @@ import Book from './Book'
 
 class Search extends Component {
   static propTypes = {
-      books: PropTypes.array.isRequired,
-      changeShelf: PropTypes.func.isRequired
-    }
-    updateQuery = (query) => {
-        this.props.updateQuery(query.trim());
-    };
+    books: PropTypes.array.isRequired,
+    changeBookshelf: PropTypes.func.isRequired,
+    updateQuery: PropTypes.func.isRequired
+  }
     render () {
+      const {books, changeBookshelf} = this.props
       return (
         <div className="search-books">
           <div className="search-books-bar">
@@ -20,7 +19,7 @@ class Search extends Component {
               <input
                 type="text"
                 placeholder="Search by title or author"
-                onChange={(e) => this.updateQuery(e.target.value)}
+                onChange={(e) => this.props.updateQuery(e.target.value)}
               />
             </div>
           </div>
@@ -28,11 +27,11 @@ class Search extends Component {
             <ol className="books-grid">
               <div className="bookshelf-books">
                 <ol className="books-grid">
-                  {this.props.books.map((book) => (
+                  {books.map((book) => (
                     <li key={book.id} className="contact-list-item">
                       <Book
                         book={book}
-                        changeShelf={this.props.changeShelf}
+                        changeBookshelf={changeBookshelf}
                       />
                     </li>
                   ))}

@@ -8,7 +8,7 @@ import './App.css'
 class BooksApp extends Component {
   state = {
     books: [],
-    searchBooks: []
+    booksFromSearch: []
   }
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
@@ -18,7 +18,7 @@ class BooksApp extends Component {
   getBooksForShelf(shelfName){
     return this.state.books.filter((b) => b.shelf === shelfName)
   }
-  changeShelf = (book, newShelf) => {
+  changeBookshelf = (book, newShelf) => {
     BooksAPI.update(book, newShelf).then(() => {
       book.shelf = newShelf
       this.setState(state => ({
@@ -26,29 +26,29 @@ class BooksApp extends Component {
       }))
     })
   }
-    updateQuery = (query) => {
-      if (!query) {
-        this.setState({query: '', books: []})
-      } else {
-        this.setState({ query: query.trim() })
-        BooksAPI.search(query).then((books) => {
-          if(books.length){
-              books.forEach((book, index) => {
-                  let displayedBooks = this.state.books.find((b) => b.id === book.id)
-                  book.shelf = displayedBooks ? displayedBooks.shelf : 'none'
-                  book[index] = book
-              })
-              this.setState({
-                searchBooks: books
-              })
-          } else {
-              this.setState({
-                  searchBooks: []
-              });
-            }
-        })
-      }
+  updateQuery = (query) => {
+    if (!query) {
+      this.setState({query: '', books: []})
+    } else {
+      this.setState({ query: query.trim() })
+      BooksAPI.search(query).then((books) => {
+        if(books.length){
+            books.map((book, index) => {
+                let displayedBooks = this.state.books.find((b) => b.id === book.id)
+                book.shelf = displayedBooks ? displayedBooks.shelf : 'none'
+                book[index] = book
+            })
+            this.setState({
+              booksFromSearch: books
+            })
+        } else {
+            this.setState({
+              booksFromSearch: []
+            })
+          }
+      })
     }
+  }
   render() {
     return (
       <div className="app">
@@ -62,17 +62,17 @@ class BooksApp extends Component {
                 <BookShelf
                   title="Currently reading"
                   books={this.getBooksForShelf("currentlyReading")}
-                  changeShelf={this.changeShelf}
+                  changeBookshelf={this.changeBookshelf}
                 />
                 <BookShelf
                   title="Want to read"
                   books={this.getBooksForShelf("wantToRead")}
-                  changeShelf={this.changeShelf}
+                  changeBookshelf={this.changeBookshelf}
                 />
                 <BookShelf
                   title="Read"
                   books={this.getBooksForShelf("read")}
-                  changeShelf={this.changeShelf}
+                  changeBookshelf={this.changeBookshelf}
                 />
               </div>
             </div>
@@ -81,8 +81,8 @@ class BooksApp extends Component {
         />
         <Route path="/search" render={( {history} ) => (
           <Search
-            changeShelf={this.changeShelf}
-            books={this.state.searchBooks}
+            changeBookshelf={this.changeBookshelf}
+            books={this.state.booksFromSearch}
             updateQuery={this.updateQuery}
             />
           )}

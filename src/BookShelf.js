@@ -7,10 +7,10 @@ class BookShelf extends Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
     books: PropTypes.array.isRequired,
-    changeShelf: PropTypes.func.isRequired
+    changeBookshelf: PropTypes.func.isRequired
   }
   render() {
-    const {title, books, changeShelf} = this.props
+    const {title, books, changeBookshelf} = this.props
     return (
         <div className="bookshelf">
           <h2 className="bookshelf-title">{title}</h2>
@@ -19,7 +19,7 @@ class BookShelf extends Component {
               {books.map((book) => (
                 <li key={book.id}>
                   <Book
-                    changeShelf={changeShelf}
+                    changeBookshelf={changeBookshelf}
                     book={book}
                   />
                 </li>
