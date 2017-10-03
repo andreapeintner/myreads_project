@@ -9,9 +9,6 @@ class Book extends Component {
   changeShelf = (event) => {
     this.props.changeShelf(this.props.book, event.target.value)
   }
-  // updateBook = (shelf) => {
-  //   this.props.changeShelf(this.props.book, event.target.value)
-  // }
   render () {
     const {book} = this.props
     return (
