@@ -7,7 +7,8 @@ import './App.css'
 
 class BooksApp extends Component {
   state = {
-    books: []
+    books: [],
+    searchBooks: []
   }
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
@@ -25,6 +26,29 @@ class BooksApp extends Component {
       }))
     })
   }
+    updateQuery = (query) => {
+      if (!query) {
+        this.setState({query: '', books: []})
+      } else {
+        this.setState({ query: query.trim() })
+        BooksAPI.search(query).then((books) => {
+          if(books.length){
+              books.forEach((book, index) => {
+                  let displayedBooks = this.state.books.find((b) => b.id === book.id)
+                  book.shelf = displayedBooks ? displayedBooks.shelf : 'none'
+                  book[index] = book
+              })
+              this.setState({
+                searchBooks: books
+              })
+          } else {
+              this.setState({
+                  searchBooks: []
+              });
+            }
+        })
+      }
+    }
   render() {
     return (
       <div className="app">
@@ -58,7 +82,8 @@ class BooksApp extends Component {
         <Route path="/search" render={( {history} ) => (
           <Search
             changeShelf={this.changeShelf}
-            booksOnShelf={this.state.books}
+            books={this.state.searchBooks}
+            updateQuery={this.updateQuery}
             />
           )}
         />
