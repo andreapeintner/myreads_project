@@ -1,35 +1,26 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { PropTypes } from 'prop-types'
 import Book from './Book'
 
-class BookShelf extends Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    books: PropTypes.array.isRequired,
-    changeBookshelf: PropTypes.func.isRequired
-  }
-  render() {
-    const {title, books, changeBookshelf} = this.props
-    return (
-        <div className="bookshelf">
-          <h2 className="bookshelf-title">{title}</h2>
-          <div className="bookshelf-books">
-            <ol className="books-grid">
-              {books.map((book) => (
-                <li key={book.id}>
-                  <Book
-                    changeBookshelf={changeBookshelf}
-                    book={book}
-                  />
-                </li>
-              ))}
-            </ol>
-          </div>
-            <Link to="/search" className="open-search">open-search</Link>
-        </div>
-    )
-  }
+function BookShelf(props) {
+  return (
+    <div className="bookshelf">
+      <h2 className="bookshelf-title">{props.title}</h2>
+      <div className="bookshelf-books">
+        <ol className="books-grid">
+          {props.books.map((book) => (
+            <li key={book.id}>
+              <Book
+                changeBookshelf={props.changeBookshelf}
+                book={book}
+              />
+            </li>
+          ))}
+        </ol>
+      </div>
+      <Link to="/search" className="open-search">open-search</Link>
+    </div>
+  )
 }
 
 export default BookShelf

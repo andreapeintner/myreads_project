@@ -1,16 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
 import Book from './Book'
 
-class Search extends Component {
-  static propTypes = {
-    books: PropTypes.array.isRequired,
-    changeBookshelf: PropTypes.func.isRequired,
-    updateQuery: PropTypes.func.isRequired
-  }
-    render () {
-      const {books, changeBookshelf} = this.props
+function Search(props) {
       return (
         <div className="search-books">
           <div className="search-books-bar">
@@ -19,7 +11,7 @@ class Search extends Component {
               <input
                 type="text"
                 placeholder="Search by title or author"
-                onChange={(e) => this.props.updateQuery(e.target.value)}
+                onChange={(e) => props.updateQuery(e.target.value)}
               />
             </div>
           </div>
@@ -27,11 +19,11 @@ class Search extends Component {
             <ol className="books-grid">
               <div className="bookshelf-books">
                 <ol className="books-grid">
-                  {books.map((book) => (
+                  {props.books.map((book) => (
                     <li key={book.id} className="contact-list-item">
                       <Book
                         book={book}
-                        changeBookshelf={changeBookshelf}
+                        changeBookshelf={props.changeBookshelf}
                       />
                     </li>
                   ))}
@@ -42,6 +34,5 @@ class Search extends Component {
         </div>
       )
     }
-  }
 
 export default Search
